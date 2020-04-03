@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Main2Activity">
+
+    <com.amrit.circulargraphview.CircleSeekBar
+        android:id="@+id/inner_circle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:wheel_can_touch="false"
+        app:wheel_cur_process="50"
+        app:wheel_max_process="100"
+        app:wheel_reached_width="3dp"
+        app:wheel_unreached_width="3dp" />
+
+
+    <com.amrit.circulargraphview.CircleSeekBar
+        android:id="@+id/outer_circle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:wheel_can_touch="false"
+        app:wheel_cur_process="50"
+        app:wheel_max_process="100"
+        app:wheel_reached_width="3dp"
+        app:wheel_unreached_width="3dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
