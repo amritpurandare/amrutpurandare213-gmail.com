@@ -3,9 +3,7 @@ package com.amrit.circulargraphview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
@@ -19,24 +17,24 @@ import androidx.core.content.ContextCompat;
 // https://github.com/feeeei/CircleSeekbar
 public class CircleSeekBar extends View {
 
-    private static final double RADIAN = 180 / Math.PI;
+//    private static final double RADIAN = 180 / Math.PI;
 
     private static final String INATANCE_STATE = "state";
     private static final String INSTANCE_MAX_PROCESS = "max_process";
     private static final String INSTANCE_CUR_PROCESS = "cur_process";
     private static final String INSTANCE_REACHED_COLOR = "reached_color";
     private static final String INSTANCE_REACHED_WIDTH = "reached_width";
-    private static final String INSTANCE_REACHED_CORNER_ROUND = "reached_corner_round";
+//    private static final String INSTANCE_REACHED_CORNER_ROUND = "reached_corner_round";
     private static final String INSTANCE_UNREACHED_COLOR = "unreached_color";
     private static final String INSTANCE_UNREACHED_WIDTH = "unreached_width";
-    private static final String INSTANCE_POINTER_COLOR = "pointer_color";
+//    private static final String INSTANCE_POINTER_COLOR = "pointer_color";
     private static final String INSTANCE_POINTER_RADIUS = "pointer_radius";
-    private static final String INSTANCE_POINTER_SHADOW = "pointer_shadow";
+//    private static final String INSTANCE_POINTER_SHADOW = "pointer_shadow";
     private static final String INSTANCE_POINTER_SHADOW_RADIUS = "pointer_shadow_radius";
-    private static final String INSTANCE_WHEEL_SHADOW = "wheel_shadow";
+//    private static final String INSTANCE_WHEEL_SHADOW = "wheel_shadow";
     private static final String INSTANCE_WHEEL_SHADOW_RADIUS = "wheel_shadow_radius";
-    private static final String INSTANCE_WHEEL_HAS_CACHE = "wheel_has_cache";
-    private static final String INSTANCE_WHEEL_CAN_TOUCH = "wheel_can_touch";
+//    private static final String INSTANCE_WHEEL_HAS_CACHE = "wheel_has_cache";
+//    private static final String INSTANCE_WHEEL_CAN_TOUCH = "wheel_can_touch";
     private static final String INSTANCE_WHEEL_SCROLL_ONLY_ONE_CIRCLE = "wheel_scroll_only_one_circle";
 
     private Paint mWheelPaint;
@@ -49,28 +47,30 @@ public class CircleSeekBar extends View {
 
     private int mMaxProcess;
     private int mCurProcess;
-    private float mUnreachedRadius;
+//    private float mUnreachedRadius;
     private int mReachedColor, mUnreachedColor;
     private float mReachedWidth, mUnreachedWidth;
-    private boolean isHasReachedCornerRound;
-    private int mPointerColor;
-    private float mPointerRadius;
+//    private boolean isHasReachedCornerRound;
+//    private int mPointerColor;
+//    private float mPointerRadius;
 
     private double mCurAngle;
-    private float mWheelCurX, mWheelCurY;
+//    private float mWheelCurX, mWheelCurY;
 
-    private boolean isHasWheelShadow, isHasPointerShadow;
-    private float mWheelShadowRadius, mPointerShadowRadius;
+//    private boolean isHasWheelShadow;
+//    private boolean  isHasPointerShadow;
+//    private float mWheelShadowRadius;
+//    private float  mPointerShadowRadius;
 
-    private boolean isHasCache;
-    private Canvas mCacheCanvas;
-    private Bitmap mCacheBitmap;
+//    private boolean isHasCache;
+//    private Canvas mCacheCanvas;
+//    private Bitmap mCacheBitmap;
 
-    private boolean isCanTouch;
+//    private boolean isCanTouch;
 
-    private boolean isScrollOneCircle;
+//    private boolean isScrollOneCircle;
 
-    private float mDefShadowOffset;
+//    private float mDefShadowOffset;
 
 //    private OnSeekBarChangeListener mChangListener;
 
@@ -91,25 +91,25 @@ public class CircleSeekBar extends View {
     }
 
     private void initPaints() {
-        mDefShadowOffset = getDimen(R.dimen.def_shadow_offset);
+//        mDefShadowOffset = getDimen(R.dimen.def_shadow_offset);
 
         mWheelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWheelPaint.setColor(mUnreachedColor);
         mWheelPaint.setStyle(Paint.Style.STROKE);
         mWheelPaint.setStrokeWidth(mUnreachedWidth);
 
-        if (isHasWheelShadow) {
-            mWheelPaint.setShadowLayer(mWheelShadowRadius, mDefShadowOffset, mDefShadowOffset, Color.DKGRAY);
-        }
+//        if (isHasWheelShadow) {
+//            mWheelPaint.setShadowLayer(mWheelShadowRadius, mDefShadowOffset, mDefShadowOffset, Color.DKGRAY);
+//        }
 
         mReachedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mReachedPaint.setColor(mReachedColor);
         mReachedPaint.setStyle(Paint.Style.STROKE);
         mReachedPaint.setStrokeWidth(mReachedWidth);
 
-        if (isHasReachedCornerRound) {
-            mReachedPaint.setStrokeCap(Paint.Cap.ROUND);
-        }
+//        if (isHasReachedCornerRound) {
+//            mReachedPaint.setStrokeCap(Paint.Cap.ROUND);
+//        }
 
 
 //        mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -131,29 +131,32 @@ public class CircleSeekBar extends View {
         mReachedColor = a.getColor(R.styleable.CircleSeekBar_wheel_reached_color, getColor(R.color.def_reached_color));
         mUnreachedColor = a.getColor(R.styleable.CircleSeekBar_wheel_unreached_color,
                 getColor(R.color.def_wheel_color));
+
         mUnreachedWidth = a.getDimension(R.styleable.CircleSeekBar_wheel_unreached_width,
                 getDimen(R.dimen.def_wheel_width));
-        isHasReachedCornerRound = a.getBoolean(R.styleable.CircleSeekBar_wheel_reached_has_corner_round, true);
-        mReachedWidth = a.getDimension(R.styleable.CircleSeekBar_wheel_reached_width, mUnreachedWidth);
-        mPointerColor = a.getColor(R.styleable.CircleSeekBar_wheel_pointer_color, getColor(R.color.def_pointer_color));
-        mPointerRadius = a.getDimension(R.styleable.CircleSeekBar_wheel_pointer_radius, mReachedWidth / 2);
-        isHasWheelShadow = a.getBoolean(R.styleable.CircleSeekBar_wheel_has_wheel_shadow, false);
-        if (isHasWheelShadow) {
-            mWheelShadowRadius = a.getDimension(R.styleable.CircleSeekBar_wheel_shadow_radius,
-                    getDimen(R.dimen.def_shadow_radius));
-        }
-        isHasPointerShadow = a.getBoolean(R.styleable.CircleSeekBar_wheel_has_pointer_shadow, false);
-        if (isHasPointerShadow) {
-            mPointerShadowRadius = a.getDimension(R.styleable.CircleSeekBar_wheel_pointer_shadow_radius,
-                    getDimen(R.dimen.def_shadow_radius));
-        }
-        isHasCache = a.getBoolean(R.styleable.CircleSeekBar_wheel_has_cache, isHasWheelShadow);
-        isCanTouch = a.getBoolean(R.styleable.CircleSeekBar_wheel_can_touch, true);
-        isScrollOneCircle = a.getBoolean(R.styleable.CircleSeekBar_wheel_scroll_only_one_circle, false);
 
-        if (isHasPointerShadow | isHasWheelShadow) {
-            setSoftwareLayer();
-        }
+//        isHasReachedCornerRound = a.getBoolean(R.styleable.CircleSeekBar_wheel_reached_has_corner_round, true);
+
+        mReachedWidth = a.getDimension(R.styleable.CircleSeekBar_wheel_reached_width, mUnreachedWidth);
+//        mPointerColor = a.getColor(R.styleable.CircleSeekBar_wheel_pointer_color, getColor(R.color.def_pointer_color));
+//        mPointerRadius = a.getDimension(R.styleable.CircleSeekBar_wheel_pointer_radius, mReachedWidth / 2);
+//        isHasWheelShadow = a.getBoolean(R.styleable.CircleSeekBar_wheel_has_wheel_shadow, false);
+//        if (isHasWheelShadow) {
+//            mWheelShadowRadius = a.getDimension(R.styleable.CircleSeekBar_wheel_shadow_radius,
+//                    getDimen(R.dimen.def_shadow_radius));
+//        }
+//        isHasPointerShadow = a.getBoolean(R.styleable.CircleSeekBar_wheel_has_pointer_shadow, false);
+//        if (isHasPointerShadow) {
+//            mPointerShadowRadius = a.getDimension(R.styleable.CircleSeekBar_wheel_pointer_shadow_radius,
+//                    getDimen(R.dimen.def_shadow_radius));
+//        }
+//        isHasCache = a.getBoolean(R.styleable.CircleSeekBar_wheel_has_cache, isHasWheelShadow);
+//        isCanTouch = a.getBoolean(R.styleable.CircleSeekBar_wheel_can_touch, true);
+//        isScrollOneCircle = a.getBoolean(R.styleable.CircleSeekBar_wheel_scroll_only_one_circle, false);
+
+//        if (isHasPointerShadow | isHasWheelShadow) {
+//            setSoftwareLayer();
+//        }
         a.recycle();
     }
 
@@ -184,9 +187,9 @@ public class CircleSeekBar extends View {
         return getResources().getDimension(dimenId);
     }
 
-    private void setSoftwareLayer() {
-        setLayerType(LAYER_TYPE_SOFTWARE, null);
-    }
+//    private void setSoftwareLayer() {
+//        setLayerType(LAYER_TYPE_SOFTWARE, null);
+//    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -196,7 +199,7 @@ public class CircleSeekBar extends View {
         setMeasuredDimension(min, min);
 
         refershPosition();
-        refershUnreachedWidth();
+//        refershUnreachedWidth();
     }
 
     @Override
@@ -210,26 +213,27 @@ public class CircleSeekBar extends View {
 
         float wheelRadius = (canvas.getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - mUnreachedWidth / 2;
 
-        if (isHasCache) {
-            if (mCacheCanvas == null) {
-                buildCache(centerX, centerY, wheelRadius);
-            }
-            canvas.drawBitmap(mCacheBitmap, 0, 0, null);
-        } else {
+//        if (isHasCache) {
+//            if (mCacheCanvas == null) {
+//                buildCache(centerX, centerY, wheelRadius);
+//            }
+//            canvas.drawBitmap(mCacheBitmap, 0, 0, null);
+//        }
+//        else {
             canvas.drawCircle(centerX, centerY, wheelRadius, mWheelPaint);
-        }
+//        }
 
         canvas.drawArc(new RectF(left, top, right, bottom), -90, (float) mCurAngle, false, mReachedPaint);
 
 //        canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
     }
 
-    private void buildCache(float centerX, float centerY, float wheelRadius) {
+   /* private void buildCache(float centerX, float centerY, float wheelRadius) {
         mCacheBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         mCacheCanvas = new Canvas(mCacheBitmap);
 
         mCacheCanvas.drawCircle(centerX, centerY, wheelRadius, mWheelPaint);
-    }
+    }*/
 
   /*  @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -281,32 +285,32 @@ public class CircleSeekBar extends View {
         return Math.max(mUnreachedWidth, Math.max(mReachedWidth, mPointerRadius));
     }*/
 
-    private void refershUnreachedWidth() {
-        mUnreachedRadius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - mUnreachedWidth) / 2;
-    }
+//    private void refershUnreachedWidth() {
+//        mUnreachedRadius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - mUnreachedWidth) / 2;
+//    }
 
-    private void refershWheelCurPosition(double cos) {
-        mWheelCurX = calcXLocationInWheel(mCurAngle, cos);
-        mWheelCurY = calcYLocationInWheel(cos);
-    }
+//    private void refershWheelCurPosition(double cos) {
+//        mWheelCurX = calcXLocationInWheel(mCurAngle, cos);
+//        mWheelCurY = calcYLocationInWheel(cos);
+//    }
 
     private void refershPosition() {
         mCurAngle = (double) mCurProcess / mMaxProcess * 360.0;
         double cos = -Math.cos(Math.toRadians(mCurAngle));
-        refershWheelCurPosition(cos);
+//        refershWheelCurPosition(cos);
     }
 
-    private float calcXLocationInWheel(double angle, double cos) {
-        if (angle < 180) {
-            return (float) (getMeasuredWidth() / 2 + Math.sqrt(1 - cos * cos) * mUnreachedRadius);
-        } else {
-            return (float) (getMeasuredWidth() / 2 - Math.sqrt(1 - cos * cos) * mUnreachedRadius);
-        }
-    }
+//    private float calcXLocationInWheel(double angle, double cos) {
+//        if (angle < 180) {
+//            return (float) (getMeasuredWidth() / 2 + Math.sqrt(1 - cos * cos) * mUnreachedRadius);
+//        } else {
+//            return (float) (getMeasuredWidth() / 2 - Math.sqrt(1 - cos * cos) * mUnreachedRadius);
+//        }
+//    }
 
-    private float calcYLocationInWheel(double cos) {
+/*    private float calcYLocationInWheel(double cos) {
         return getMeasuredWidth() / 2 + mUnreachedRadius * (float) cos;
-    }
+    }*/
 
     /**
      *
@@ -325,18 +329,18 @@ public class CircleSeekBar extends View {
         bundle.putInt(INSTANCE_CUR_PROCESS, mCurProcess);
         bundle.putInt(INSTANCE_REACHED_COLOR, mReachedColor);
         bundle.putFloat(INSTANCE_REACHED_WIDTH, mReachedWidth);
-        bundle.putBoolean(INSTANCE_REACHED_CORNER_ROUND, isHasReachedCornerRound);
+//        bundle.putBoolean(INSTANCE_REACHED_CORNER_ROUND, isHasReachedCornerRound);
         bundle.putInt(INSTANCE_UNREACHED_COLOR, mUnreachedColor);
         bundle.putFloat(INSTANCE_UNREACHED_WIDTH, mUnreachedWidth);
-        bundle.putInt(INSTANCE_POINTER_COLOR, mPointerColor);
-        bundle.putFloat(INSTANCE_POINTER_RADIUS, mPointerRadius);
-        bundle.putBoolean(INSTANCE_POINTER_SHADOW, isHasPointerShadow);
-        bundle.putFloat(INSTANCE_POINTER_SHADOW_RADIUS, mPointerShadowRadius);
-        bundle.putBoolean(INSTANCE_WHEEL_SHADOW, isHasWheelShadow);
-        bundle.putFloat(INSTANCE_WHEEL_SHADOW_RADIUS, mPointerShadowRadius);
-        bundle.putBoolean(INSTANCE_WHEEL_HAS_CACHE, isHasCache);
-        bundle.putBoolean(INSTANCE_WHEEL_CAN_TOUCH, isCanTouch);
-        bundle.putBoolean(INSTANCE_WHEEL_SCROLL_ONLY_ONE_CIRCLE, isScrollOneCircle);
+//        bundle.putInt(INSTANCE_POINTER_COLOR, mPointerColor);
+//        bundle.putFloat(INSTANCE_POINTER_RADIUS, mPointerRadius);
+//        bundle.putBoolean(INSTANCE_POINTER_SHADOW, isHasPointerShadow);
+//        bundle.putFloat(INSTANCE_POINTER_SHADOW_RADIUS, mPointerShadowRadius);
+//        bundle.putBoolean(INSTANCE_WHEEL_SHADOW, isHasWheelShadow);
+//        bundle.putFloat(INSTANCE_WHEEL_SHADOW_RADIUS, mPointerShadowRadius);
+//        bundle.putBoolean(INSTANCE_WHEEL_HAS_CACHE, isHasCache);
+//        bundle.putBoolean(INSTANCE_WHEEL_CAN_TOUCH, isCanTouch);
+//        bundle.putBoolean(INSTANCE_WHEEL_SCROLL_ONLY_ONE_CIRCLE, isScrollOneCircle);
         return bundle;
     }
 
@@ -349,18 +353,18 @@ public class CircleSeekBar extends View {
             mCurProcess = bundle.getInt(INSTANCE_CUR_PROCESS);
             mReachedColor = bundle.getInt(INSTANCE_REACHED_COLOR);
             mReachedWidth = bundle.getFloat(INSTANCE_REACHED_WIDTH);
-            isHasReachedCornerRound = bundle.getBoolean(INSTANCE_REACHED_CORNER_ROUND);
+//            isHasReachedCornerRound = bundle.getBoolean(INSTANCE_REACHED_CORNER_ROUND);
             mUnreachedColor = bundle.getInt(INSTANCE_UNREACHED_COLOR);
             mUnreachedWidth = bundle.getFloat(INSTANCE_UNREACHED_WIDTH);
-            mPointerColor = bundle.getInt(INSTANCE_POINTER_COLOR);
-            mPointerRadius = bundle.getFloat(INSTANCE_POINTER_RADIUS);
-            isHasPointerShadow = bundle.getBoolean(INSTANCE_POINTER_SHADOW);
-            mPointerShadowRadius = bundle.getFloat(INSTANCE_POINTER_SHADOW_RADIUS);
-            isHasWheelShadow = bundle.getBoolean(INSTANCE_WHEEL_SHADOW);
-            mPointerShadowRadius = bundle.getFloat(INSTANCE_WHEEL_SHADOW_RADIUS);
-            isHasCache = bundle.getBoolean(INSTANCE_WHEEL_HAS_CACHE);
-            isCanTouch = bundle.getBoolean(INSTANCE_WHEEL_CAN_TOUCH);
-            isScrollOneCircle = bundle.getBoolean(INSTANCE_WHEEL_SCROLL_ONLY_ONE_CIRCLE);
+//            mPointerColor = bundle.getInt(INSTANCE_POINTER_COLOR);
+//            mPointerRadius = bundle.getFloat(INSTANCE_POINTER_RADIUS);
+//            isHasPointerShadow = bundle.getBoolean(INSTANCE_POINTER_SHADOW);
+//            mPointerShadowRadius = bundle.getFloat(INSTANCE_POINTER_SHADOW_RADIUS);
+//            isHasWheelShadow = bundle.getBoolean(INSTANCE_WHEEL_SHADOW);
+//            mPointerShadowRadius = bundle.getFloat(INSTANCE_WHEEL_SHADOW_RADIUS);
+//            isHasCache = bundle.getBoolean(INSTANCE_WHEEL_HAS_CACHE);
+//            isCanTouch = bundle.getBoolean(INSTANCE_WHEEL_CAN_TOUCH);
+//            isScrollOneCircle = bundle.getBoolean(INSTANCE_WHEEL_SCROLL_ONLY_ONE_CIRCLE);
             initPaints();
         } else {
             super.onRestoreInstanceState(state);
@@ -416,7 +420,7 @@ public class CircleSeekBar extends View {
     public void setUnreachedWidth(float unreachedWidth) {
         this.mUnreachedWidth = unreachedWidth;
         mWheelPaint.setStrokeWidth(unreachedWidth);
-        refershUnreachedWidth();
+//        refershUnreachedWidth();
         invalidate();
     }
 
