@@ -431,6 +431,16 @@ public class CircleSeekBar extends View {
         invalidate();
     }
 
+     public int getMaxProcess() {
+        return mMaxProcess;
+    }
+
+    public void setMaxProcess(int maxProcess) {
+        mMaxProcess = maxProcess;
+        refershPosition();
+        invalidate();
+    }
+
    /* private int getSelectedValue() {
         return Math.round(mMaxProcess * ((float) mCurAngle / 360));
     }
