@@ -3,14 +3,19 @@
 
     <declare-styleable name="CircularGraph">
 
-        <!--     maximum value of the default color    -->
+        <!-- maximum value of the default space -->
         <attr name="circle_max_value" format="integer" />
+        <!-- used value out of max value -->
         <attr name="circle_filled_value" format="integer" />
 
-        <attr name="circle_filled_color" format="color" />
+        <!-- circle's default circumference color -->
         <attr name="circle_default_color" format="color" />
+        <!-- circle's filled circumference color -->
+        <attr name="circle_filled_color" format="color" />
 
+        <!-- circle's default circumference width -->
         <attr name="circle_default_width" format="dimension" />
+        <!-- circle's filled circumference width -->
         <attr name="circle_filled_width" format="dimension" />
     </declare-styleable>
 

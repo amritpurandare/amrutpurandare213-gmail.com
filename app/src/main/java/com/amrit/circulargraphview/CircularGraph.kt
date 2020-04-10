@@ -13,20 +13,21 @@ import kotlin.math.min
 
 class CircularGraph : View {
 
-    private var mMaxProcess: Int = 0
-    private var mCurProcess: Int = 0
+    private var mMaxLimit: Int = 0
+    private var mUsedLimit: Int = 0
 
-    private var mReachedColor: Int = 0
-    private var mUnreachedColor: Int = 0
+    private var mFilledColor: Int = 0
+    private var mDefaultColor: Int = 0
 
-    private var mReachedWidth: Float = 0f
-    private var mUnreachedWidth: Float = 0f
+    private var mFilledWidth: Float = 0f
+    private var mDefaultWidth: Float = 0f
 
-    private lateinit var mWheelPaint: Paint
-    private lateinit var mReachedPaint: Paint
+    private lateinit var mDefaultCircle: Paint
+    private lateinit var mFilledCircle: Paint
     private lateinit var mReachedEdgePaint: Paint
 
-    private var mCurAngle: Double = 0.0
+    /* Angle to draw in clock-wise direction*/
+    private var mSweepAngle: Double = 0.0
 
     constructor(context: Context) : this(context, null)
 
@@ -48,31 +49,31 @@ class CircularGraph : View {
         val typedArray: TypedArray =
             context.obtainStyledAttributes(attrs, R.styleable.CircularGraph, defStyleAttr, 0)
 
-        mMaxProcess = typedArray.getInt(R.styleable.CircularGraph_circle_max_value, 100)
-        mCurProcess = typedArray.getInt(R.styleable.CircularGraph_circle_filled_value, 100)
+        mMaxLimit = typedArray.getInt(R.styleable.CircularGraph_circle_max_value, 100)
+        mUsedLimit = typedArray.getInt(R.styleable.CircularGraph_circle_filled_value, 100)
 
-        if (mCurProcess > mMaxProcess) mCurProcess = mMaxProcess
+        if (mUsedLimit > mMaxLimit) mUsedLimit = mMaxLimit
 
 
-        mReachedColor = typedArray.getColor(
+        mFilledColor = typedArray.getColor(
             R.styleable.CircularGraph_circle_filled_color,
             getColor(context, R.color.def_reached_color)
         )
-        mUnreachedColor = typedArray.getColor(
+        mDefaultColor = typedArray.getColor(
             R.styleable.CircularGraph_circle_default_color,
             getColor(context, R.color.def_wheel_color)
         )
 
-        mUnreachedWidth =
+        mDefaultWidth =
             typedArray.getDimension(
-                R.styleable.CircularGraph_circle_filled_width,
+                R.styleable.CircularGraph_circle_default_width,
                 resources.getDimension(R.dimen.def_wheel_width)
             )
 
-        mReachedWidth =
+        mFilledWidth =
             typedArray.getDimension(
-                R.styleable.CircularGraph_circle_default_width,
-                mUnreachedWidth
+                R.styleable.CircularGraph_circle_filled_width,
+                mDefaultWidth
             )
 
         typedArray.recycle()
@@ -94,17 +95,17 @@ class CircularGraph : View {
 
     private fun initializePaintObjects() {
 
-        mWheelPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mWheelPaint.color = mUnreachedColor
-        mWheelPaint.style = Paint.Style.STROKE
-        mWheelPaint.strokeWidth = mUnreachedWidth
+        mDefaultCircle = Paint(Paint.ANTI_ALIAS_FLAG)
+        mDefaultCircle.color = mDefaultColor
+        mDefaultCircle.style = Paint.Style.STROKE
+        mDefaultCircle.strokeWidth = mDefaultWidth
 
-        mReachedPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mReachedPaint.color = mReachedColor
-        mReachedPaint.style = Paint.Style.STROKE
-        mReachedPaint.strokeWidth = mReachedWidth
+        mFilledCircle = Paint(Paint.ANTI_ALIAS_FLAG)
+        mFilledCircle.color = mFilledColor
+        mFilledCircle.style = Paint.Style.STROKE
+        mFilledCircle.strokeWidth = mFilledWidth
 
-        mReachedEdgePaint = Paint(mReachedPaint)
+        mReachedEdgePaint = Paint(mFilledCircle)
         mReachedEdgePaint.style = Paint.Style.FILL
     }
 
@@ -122,80 +123,80 @@ class CircularGraph : View {
     }
 
     private fun refreshCirclePositions() {
-        mCurAngle = mCurProcess.toDouble() / mMaxProcess * 360.0
+        mSweepAngle = mUsedLimit.toDouble() / mMaxLimit * 360.0
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        val left = paddingLeft + mUnreachedWidth / 2
-        val top = paddingTop + mUnreachedWidth / 2
-        val right = canvas!!.width - paddingRight - mUnreachedWidth / 2
-        val bottom = canvas.height - paddingBottom - mUnreachedWidth / 2
-        val centerX = (left + right) / 2
-        val centerY = (top + bottom) / 2
-        val wheelRadius = (canvas.width - paddingLeft - paddingRight) / 2 - mUnreachedWidth / 2
+        val left = paddingLeft + mDefaultWidth / 2
+        val top = paddingTop + mDefaultWidth / 2
+        val right = canvas!!.width - paddingRight - mDefaultWidth / 2
+        val bottom = canvas.height - paddingBottom - mDefaultWidth / 2
+        val xCoordinate = (left + right) / 2
+        val yCoordinate = (top + bottom) / 2
+        val circleRadius = (canvas.width - paddingLeft - paddingRight) / 2 - mDefaultWidth / 2
 
-        canvas.drawCircle(centerX, centerY, wheelRadius, mWheelPaint)
+        canvas.drawCircle(xCoordinate, yCoordinate, circleRadius, mDefaultCircle)
 
         canvas.drawArc(
             RectF(left, top, right, bottom),
             -90f,
-            mCurAngle.toFloat(),
+            mSweepAngle.toFloat(),
             false,
-            mReachedPaint
+            mFilledCircle
         )
 
     }
 
-    fun getMaxProcess() = mMaxProcess
+    fun getMaxLimit() = mMaxLimit
 
-    fun setMaxProcess(maxProcess: Int) {
-        mMaxProcess = maxProcess
+    fun setMaxLimit(maxLimit: Int) {
+        mMaxLimit = maxLimit
         refreshCirclePositions()
         invalidate()
     }
 
-    fun getCurProcess() = mCurProcess
+    fun getUsedLimit() = mUsedLimit
 
-    fun setCurProcess(curProcess: Int) {
-        mCurProcess = min(curProcess, mMaxProcess)
+    fun setUsedLimit(usedLimit: Int) {
+        mUsedLimit = min(usedLimit, mMaxLimit)
         refreshCirclePositions()
         invalidate()
     }
 
-    fun getUnreachedColor() = mUnreachedColor
+    fun getDefaultColor() = mDefaultColor
 
-    fun setUnreachedColor(unreachedColor: Int) {
-        mUnreachedColor = unreachedColor
-        mWheelPaint.color = unreachedColor
+    fun setDefaultColor(defaultColor: Int) {
+        mDefaultColor = defaultColor
+        mDefaultCircle.color = defaultColor
         invalidate()
     }
 
-    fun getReachedColor() = mReachedColor
+    fun getFilledColor() = mFilledColor
 
-    fun setReachedColor(reachedColor: Int) {
-        mReachedColor = reachedColor
-        mReachedPaint.color = reachedColor
-        mReachedEdgePaint.color = reachedColor
+    fun setFilledColor(filledColor: Int) {
+        mFilledColor = filledColor
+        mFilledCircle.color = filledColor
+        mReachedEdgePaint.color = filledColor
         invalidate()
     }
 
-    fun getUnreachedWidth() = mUnreachedWidth
+    fun getDefaultWidth() = mDefaultWidth
 
-    fun setUnreachedWidth(unreachedWidth: Float) {
-        mUnreachedWidth = unreachedWidth
-        mWheelPaint.strokeWidth = unreachedWidth
+    fun setDefaultWidth(defaultWidth: Float) {
+        mDefaultWidth = defaultWidth
+        mDefaultCircle.strokeWidth = defaultWidth
         invalidate()
     }
 
-    fun getReachedWidth() = mReachedWidth
+    fun getFilledWidth() = mFilledWidth
 
-    fun setReachedWidth(reachedWidth: Float) {
-        mReachedWidth = reachedWidth
-        mReachedPaint.strokeWidth = reachedWidth
-        mReachedEdgePaint.strokeWidth = reachedWidth
+    fun setFilledWidth(filledWidth: Float) {
+        mFilledWidth = filledWidth
+        mFilledCircle.strokeWidth = filledWidth
+        mReachedEdgePaint.strokeWidth = filledWidth
         invalidate()
     }
 }
