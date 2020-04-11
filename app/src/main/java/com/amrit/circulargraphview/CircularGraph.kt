@@ -15,9 +15,6 @@ class CircularGraph : View {
 
     private var mMaxLimit: Int = 0
     private var mUsedLimit: Int = 0
-        set(value) {
-            field = value
-        }
 
     private var mDefaultColor: Int = 0
     private var mFilledColor: Int = 0
@@ -29,7 +26,7 @@ class CircularGraph : View {
     private lateinit var mFilledCircle: Paint
     private lateinit var mReachedEdgePaint: Paint
 
-    /* Angle to draw in clock-wise direction*/
+    /* Angle to draw in clock-wise direction */
     private var mSweepAngle: Double = 0.0
 
     constructor(context: Context) : this(context, null)
@@ -55,11 +52,10 @@ class CircularGraph : View {
         val typedArray: TypedArray =
             context.obtainStyledAttributes(attrs, R.styleable.CircularGraph, defStyleAttr, 0)
 
-        mMaxLimit = typedArray.getInt(R.styleable.CircularGraph_circle_max_value, 100)
-        mUsedLimit = typedArray.getInt(R.styleable.CircularGraph_circle_filled_value, 100)
+        mMaxLimit = typedArray.getInt(R.styleable.CircularGraph_circle_max_limit, DEFAULT_MAX_LIMIT)
+        mUsedLimit = typedArray.getInt(R.styleable.CircularGraph_circle_used_limit, DEFAULT_MAX_LIMIT)
 
         if (mUsedLimit > mMaxLimit) mUsedLimit = mMaxLimit
-
 
         mFilledColor = typedArray.getColor(
             R.styleable.CircularGraph_circle_filled_color,
@@ -236,5 +232,9 @@ class CircularGraph : View {
         mFilledCircle.strokeWidth = filledWidth
         mReachedEdgePaint.strokeWidth = filledWidth
         invalidate()
+    }
+
+    companion object {
+        private const val DEFAULT_MAX_LIMIT = 100
     }
 }

@@ -4,9 +4,9 @@
     <declare-styleable name="CircularGraph">
 
         <!-- maximum value of the default space -->
-        <attr name="circle_max_value" format="integer" />
+        <attr name="circle_max_limit" format="integer" />
         <!-- used value out of max value -->
-        <attr name="circle_filled_value" format="integer" />
+        <attr name="circle_used_limit" format="integer" />
 
         <!-- circle's default circumference color -->
         <attr name="circle_default_color" format="color" />
