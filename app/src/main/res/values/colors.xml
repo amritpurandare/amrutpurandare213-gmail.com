@@ -4,9 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-
-    <color name="def_wheel_color">#DDDDDD</color>
-    <color name="def_reached_color">#0000FF</color>
-    <color name="def_pointer_color">#FFFFFF</color>
-    <color name="green_color">#00FF00</color>
+    <color name="def_circumference_color">#DDDDDD</color>
+    <color name="filled_circumference_color">#0000FF</color>
 </resources>

@@ -11,15 +11,20 @@ class Main2Activity : AppCompatActivity() {
         setContentView(R.layout.activity_main2)
 
         val innerCircle = findViewById<CircularGraph>(R.id.inner_circle)
-//        innerCircle.curProcess = 50
-//        innerCircle.reachedColor = Color.parseColor("#FF0000")
-//        innerCircle.unreachedColor = Color.parseColor("#E3E9ED")
-
+        innerCircle.setUsedLimit(40)
+        innerCircle.setMaxLimit(50)
+        innerCircle.setFilledColor(Color.parseColor("#FF0000"))
+        innerCircle.setDefaultColor(Color.parseColor("#E3E9ED"))
+        innerCircle.setDefaultWidth(resources.getDimension(R.dimen.default_circumference_width))
+        innerCircle.setFilledWidth(resources.getDimension(R.dimen.default_circumference_width))
 
         val outerCircle = findViewById<CircularGraph>(R.id.outer_circle)
-//        outerCircle.curProcess = 90
-//        outerCircle.reachedColor = Color.parseColor("#00FF00")
-//        outerCircle.unreachedColor = Color.parseColor("#E3E9ED")
+        outerCircle.setUsedLimit(40)
+        outerCircle.setMaxLimit(100)
+        outerCircle.setFilledColor(Color.parseColor("#0000FF"))
+        outerCircle.setDefaultColor(Color.parseColor("#E3E9ED"))
+        outerCircle.setDefaultWidth(resources.getDimension(R.dimen.default_circumference_width))
+        outerCircle.setFilledWidth(resources.getDimension(R.dimen.default_circumference_width))
 
     }
 }

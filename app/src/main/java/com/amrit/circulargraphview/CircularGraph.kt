@@ -15,12 +15,15 @@ class CircularGraph : View {
 
     private var mMaxLimit: Int = 0
     private var mUsedLimit: Int = 0
+        set(value) {
+            field = value
+        }
 
-    private var mFilledColor: Int = 0
     private var mDefaultColor: Int = 0
+    private var mFilledColor: Int = 0
 
-    private var mFilledWidth: Float = 0f
     private var mDefaultWidth: Float = 0f
+    private var mFilledWidth: Float = 0f
 
     private lateinit var mDefaultCircle: Paint
     private lateinit var mFilledCircle: Paint
@@ -45,6 +48,9 @@ class CircularGraph : View {
     }
 
 
+    /**
+     * This function get the values defined in XML and Initializes them. These attributes will be used to draw the circular shape.
+     */
     private fun initializeAttributes(attrs: AttributeSet?, defStyleAttr: Int) {
         val typedArray: TypedArray =
             context.obtainStyledAttributes(attrs, R.styleable.CircularGraph, defStyleAttr, 0)
@@ -57,17 +63,17 @@ class CircularGraph : View {
 
         mFilledColor = typedArray.getColor(
             R.styleable.CircularGraph_circle_filled_color,
-            getColor(context, R.color.def_reached_color)
+            getColor(context, R.color.filled_circumference_color)
         )
         mDefaultColor = typedArray.getColor(
             R.styleable.CircularGraph_circle_default_color,
-            getColor(context, R.color.def_wheel_color)
+            getColor(context, R.color.def_circumference_color)
         )
 
         mDefaultWidth =
             typedArray.getDimension(
                 R.styleable.CircularGraph_circle_default_width,
-                resources.getDimension(R.dimen.def_wheel_width)
+                resources.getDimension(R.dimen.default_circumference_width)
             )
 
         mFilledWidth =
@@ -79,7 +85,10 @@ class CircularGraph : View {
         typedArray.recycle()
     }
 
-
+    /*
+     * This function sets the equal padding from all sides of the circle.
+     * We're considering the max value among all the default padding values
+     */
     private fun initializePadding() {
 
         val maxPadding = max(
@@ -93,6 +102,9 @@ class CircularGraph : View {
         setPadding(maxPadding, maxPadding, maxPadding, maxPadding)
     }
 
+    /**
+     * This function creates the Paint objects those will be drawn on canvas
+     */
     private fun initializePaintObjects() {
 
         mDefaultCircle = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -122,6 +134,10 @@ class CircularGraph : View {
         refreshCirclePositions()
     }
 
+    /*
+     * This function changes the sweep angle of the circle.
+     * The used limit is used to calculate the sweep angle
+     */
     private fun refreshCirclePositions() {
         mSweepAngle = mUsedLimit.toDouble() / mMaxLimit * 360.0
     }
@@ -152,6 +168,9 @@ class CircularGraph : View {
 
     fun getMaxLimit() = mMaxLimit
 
+    /*
+     * This function sets the max limit and redraws the circular shape
+     */
     fun setMaxLimit(maxLimit: Int) {
         mMaxLimit = maxLimit
         refreshCirclePositions()
@@ -160,6 +179,9 @@ class CircularGraph : View {
 
     fun getUsedLimit() = mUsedLimit
 
+    /*
+     * This function sets the used limit out of max limit and redraws the circular shape
+     */
     fun setUsedLimit(usedLimit: Int) {
         mUsedLimit = min(usedLimit, mMaxLimit)
         refreshCirclePositions()
@@ -168,6 +190,9 @@ class CircularGraph : View {
 
     fun getDefaultColor() = mDefaultColor
 
+    /*
+     * This function sets the default color and redraws the circular shape
+     */
     fun setDefaultColor(defaultColor: Int) {
         mDefaultColor = defaultColor
         mDefaultCircle.color = defaultColor
@@ -176,6 +201,9 @@ class CircularGraph : View {
 
     fun getFilledColor() = mFilledColor
 
+    /*
+     * This function sets the filled color and redraws the circular shape
+     */
     fun setFilledColor(filledColor: Int) {
         mFilledColor = filledColor
         mFilledCircle.color = filledColor
@@ -185,6 +213,11 @@ class CircularGraph : View {
 
     fun getDefaultWidth() = mDefaultWidth
 
+    /*
+     * This function sets the default width and redraws the circular shape
+     * This value has to be dimension value (value in dp)
+     * Use function {resources.getDimension(resource_id)} to set it
+     */
     fun setDefaultWidth(defaultWidth: Float) {
         mDefaultWidth = defaultWidth
         mDefaultCircle.strokeWidth = defaultWidth
@@ -193,6 +226,11 @@ class CircularGraph : View {
 
     fun getFilledWidth() = mFilledWidth
 
+    /*
+     * This function sets the filled width and redraws the circular shape
+     * This value has to be dimension value (value in dp)
+     * Use function {resources.getDimension(resource_id)} to set it
+     */
     fun setFilledWidth(filledWidth: Float) {
         mFilledWidth = filledWidth
         mFilledCircle.strokeWidth = filledWidth

@@ -1,7 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="def_wheel_width">32dp</dimen>
-    <dimen name="def_shadow_radius">2dp</dimen>
-    <dimen name="def_shadow_offset">2dp</dimen>
+    <dimen name="default_circumference_width">4dp</dimen>
 </resources>
