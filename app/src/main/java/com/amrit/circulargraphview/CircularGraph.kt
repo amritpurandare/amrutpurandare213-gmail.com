@@ -11,6 +11,13 @@ import androidx.core.content.ContextCompat.getColor
 import kotlin.math.max
 import kotlin.math.min
 
+/*
+ * The circular Graph view
+ * This class draws circular type seek-bar on the the canvas
+ * It draws two types of circles -
+ *  a. default circle
+ *  b. Filled circle
+ */
 class CircularGraph : View {
 
     private var mMaxLimit: Int = 0
@@ -24,7 +31,7 @@ class CircularGraph : View {
 
     private lateinit var mDefaultCircle: Paint
     private lateinit var mFilledCircle: Paint
-    private lateinit var mReachedEdgePaint: Paint
+//    private lateinit var mReachedEdgePaint: Paint
 
     /* Angle to draw in clock-wise direction */
     private var mSweepAngle: Double = 0.0
@@ -113,8 +120,8 @@ class CircularGraph : View {
         mFilledCircle.style = Paint.Style.STROKE
         mFilledCircle.strokeWidth = mFilledWidth
 
-        mReachedEdgePaint = Paint(mFilledCircle)
-        mReachedEdgePaint.style = Paint.Style.FILL
+//        mReachedEdgePaint = Paint(mFilledCircle)
+//        mReachedEdgePaint.style = Paint.Style.FILL
     }
 
 
@@ -203,7 +210,7 @@ class CircularGraph : View {
     fun setFilledColor(filledColor: Int) {
         mFilledColor = filledColor
         mFilledCircle.color = filledColor
-        mReachedEdgePaint.color = filledColor
+//        mReachedEdgePaint.color = filledColor
         invalidate()
     }
 
@@ -230,7 +237,7 @@ class CircularGraph : View {
     fun setFilledWidth(filledWidth: Float) {
         mFilledWidth = filledWidth
         mFilledCircle.strokeWidth = filledWidth
-        mReachedEdgePaint.strokeWidth = filledWidth
+//        mReachedEdgePaint.strokeWidth = filledWidth
         invalidate()
     }
 
